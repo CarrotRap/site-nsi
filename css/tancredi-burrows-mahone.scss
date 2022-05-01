@@ -1,0 +1,54 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    background: var(--background) center /cover;
+
+    p {
+        font-size: 50px;
+        font-weight: 800;
+    }
+}
+
+.intro, .history {
+    height: 60vh;
+    position: relative;
+
+    .title {
+        position: absolute;
+        top: 10px;
+        font-weight: 800;
+        font-size: 50px;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+    }
+
+    .content {
+        position: absolute;
+        top: 0;
+        display: block;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+            text-align: center;
+            font-size: 30px;
+            overflow-wrap: break-word;
+            width: 50%;
+        }
+    }
+}
+
+.intro {
+    background-color: #143F6B;
+}
+
+.history {
+    background-color: #06113C;
+    height: 100vh;
+}

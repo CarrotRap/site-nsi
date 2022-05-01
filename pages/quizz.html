@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quizz - Prison Break</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/quizz.css">
+</head>
+<body>
+    <script src="../js/nav.js"></script>
+
+    <div class="question">
+        <div class="item" data-response="{ indexResponse }">
+            <p class="answer">{ question }</p>
+            <div class="responses">
+                <div class="response" data-id="0">
+                    <input type="radio" name="{ id }" id="{ id }_1">
+                    <label for="{ id }_1">{ answer1 }</label>
+                </div>
+                <div class="response" data-id="1">
+                    <input type="radio" name="{ id }" id="{ id }_2">
+                    <label for="{ id }_2">{ answer2 }</label>
+                </div>
+                <div class="response" data-id="2">
+                    <input type="radio" name="{ id }" id="{ id }_3">
+                    <label for="{ id }_3">{ answer3 }</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="end"></p>
+
+    <button class="valid">Valider</button>
+    <button class="restart">Recommencer</button>
+
+    <script src="../js/quizz.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+.question {
+    padding: 10px;
+
+    & .item {
+        padding: 10px 0;
+        & .answer {
+            margin: 5px 0;
+            font-weight: 800;
+        }
+
+        & .responses {
+            & .response {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                & label {
+                    margin: 5px 10px;
+                    color: white;
+                }
+
+                & input {
+                    appearance: none;
+                    width: 40px;
+                    height: 20px;
+                    position: relative;
+                    transition: transform .8s ease-in-out;
+                    --color: white;
+
+                    &::before {
+                        position: absolute;
+                        box-sizing: border-box;
+                        content: "";
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: 3px solid var(--color);
+                        border-radius: 99em;
+                        transition: .4s;
+                    }
+
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        left: 5px;
+                        top: 5px;
+                        width: 10px;
+                        height: 10px;
+                        background: var(--color);
+                        transition: .4s;
+                        border-radius: 50%;
+                    }
+
+                    &:checked {
+                        transform: rotate(360deg);
+
+                        &::before {
+                            background-color: var(--color);
+                        }
+
+                        &::after {
+                            background-color: black;
+                            animation: switch .4s ease-in-out forwards;
+                            animation-delay: .7s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes switch {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(20px);
+    }
+}
+
+.end {
+    margin: 5px 25px;
+    font-weight: 800;
+}
+
+.valid, .restart {
+    margin: 10px 25px;
+    padding: 10px 20px;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    background-color: white;
+
+    &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: blue;
+        transform: scaleX(0);
+        transform-origin: 0 0;
+        transition: transform .4s ease-in-out;
+    }
+
+    &::before {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        transition: color .4s;
+    }
+
+    &:hover {
+        &::after {
+            transform: scaleX(1);
+        }
+
+        &::before {
+            color: white;
+        }
+    }
+}
+
+.valid::before {
+    content: "Valider";
+}
+
+.restart::before {
+    content: "Recommencer";
+}

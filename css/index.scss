@@ -1,0 +1,118 @@
+body {
+  background-color: #111;
+}
+
+.rain .fall {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: white;
+  border-radius: 50%;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fall {
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.header {
+  background: url('../assets/images/michael-lincoln.jpg') center /cover;
+  height: 100vh;
+  position: relative;
+
+  & .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    margin: 0;
+    font-weight: 800;
+  }
+
+  & .arrow {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 20px;
+    height: 50px;
+
+    &::before {
+      position: absolute;
+      content: '';
+      width: 2px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: white;
+      left: 9px;
+    }
+
+    &::after {
+      position: absolute;
+      content: '';
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      bottom: 2px;
+      width: 14px;
+      height: 14px;
+      left: 2px;
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.content {
+  height: 100vh;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+
+  & .left1 {
+    grid-column: 1;
+    grid-row: 1;
+    
+    background-color: #FF7700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      width: 50%;
+      text-align: center;
+      font-weight: 800;
+      font-size: 20px;
+    }
+  }
+
+  & .left2 {
+    background: url('../assets/images/prison-break.webp') center /cover;
+    grid-column: 1;
+    grid-row: 2s;
+  }
+
+  & .right {
+    background-color: #2A2550;
+    grid-column: 2;
+    grid-row: 1/-1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    & .item {
+      margin: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      p:nth-child(1) {
+        font-weight: 800;
+        margin-right: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,156 @@
+body {
+  background-color: #111;
+}
+
+.rain .fall {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: white;
+  border-radius: 50%;
+  -webkit-animation-name: fall;
+          animation-name: fall;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fall {
+  100% {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+}
+
+@keyframes fall {
+  100% {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+}
+
+.header {
+  background: url("../assets/images/michael-lincoln.jpg") center/cover;
+  height: 100vh;
+  position: relative;
+}
+
+.header .center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 50px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.header .arrow {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 20px;
+  height: 50px;
+}
+
+.header .arrow::before {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  left: 9px;
+}
+
+.header .arrow::after {
+  position: absolute;
+  content: '';
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  bottom: 2px;
+  width: 14px;
+  height: 14px;
+  left: 2px;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+.content {
+  height: 100vh;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+}
+
+.content .left1 {
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-row: 1;
+  grid-row: 1;
+  background-color: #FF7700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.content .left1 p {
+  width: 50%;
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.content .left2 {
+  background: url("../assets/images/prison-break.webp") center/cover;
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-row: 2;
+  grid-row: 2s;
+}
+
+.content .right {
+  background-color: #2A2550;
+  -ms-grid-column: 2;
+  grid-column: 2;
+  grid-row: 1/-1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.content .right .item {
+  margin: 0 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.content .right .item p:nth-child(1) {
+  font-weight: 800;
+  margin-right: 10px;
+}

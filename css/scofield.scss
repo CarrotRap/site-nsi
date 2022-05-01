@@ -1,0 +1,76 @@
+.title {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    font-weight: 800;
+    font-size: 25px;
+    margin: 0;
+}
+
+.scrollInfo {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    display: none;
+
+    width: 35px;
+    height: 65px;
+    background-color: white;
+    border-radius: 100em;
+    border: 2px solid #121212;
+
+    animation: scrollAppear .8s ease-in forwards;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: calc(50% - 5px);
+        top: 10px;
+        width: 10px;
+        height: 10px;
+        background-color: #121212;
+        border-radius: 50%;
+        animation: scroll ease-in-out 1.5s infinite;
+    }
+}
+
+@keyframes scrollAppear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes scroll {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+}
+
+.infos {
+    position: absolute;
+    left: -10000px;
+
+    & .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            color: black;
+            padding: 0;
+            margin: 0;
+        }
+
+        & .top {
+            
+        }
+
+        & .desc {
+            overflow-wrap: anywhere;
+            text-align: center;
+        }
+    }
+}

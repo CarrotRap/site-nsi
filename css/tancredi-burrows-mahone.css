@@ -1,0 +1,65 @@
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  background: var(--background) center/cover;
+}
+
+.header p {
+  font-size: 50px;
+  font-weight: 800;
+}
+
+.intro, .history {
+  height: 60vh;
+  position: relative;
+}
+
+.intro .title, .history .title {
+  position: absolute;
+  top: 10px;
+  font-weight: 800;
+  font-size: 50px;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+
+.intro .content, .history .content {
+  position: absolute;
+  top: 0;
+  display: block;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.intro .content p, .history .content p {
+  text-align: center;
+  font-size: 30px;
+  overflow-wrap: break-word;
+  width: 50%;
+}
+
+.intro {
+  background-color: #143F6B;
+}
+
+.history {
+  background-color: #06113C;
+  height: 100vh;
+}
