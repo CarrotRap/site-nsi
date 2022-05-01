@@ -1,6 +1,17 @@
+/**
+ * Pour cette page, j'utilise 2 librairies nécesaire :
+ *  - THREE.JS => Lib qui permet de gerer la 3d dans un navigateur en utilisant le moteur de rendu WebGL.
+ *  - TWEEN.JS => Lib qui permet calculer les positions dans le temps avec une fonction d'application type ease
+ * 
+ * Je conseil de lire character.js avant de lire ce ficher 
+ * 
+ * Certaines resources sont mises ailleurs car le navigateur bloque la lecteur si on n'utilise pas de serveur web
+ * Les resources sont à l'adresse : https://kairrot.github.io/site-nsi/ où l'on peut retrouver le site en ligne
+ */
+
 const scrollInfo    = document.querySelector('.scrollInfo')
 
-
+/* Affichage de l'indicateur de scroll en bas à droite */
 var isScroll = false
 setTimeout(() => {
     if(!isScroll) scrollInfo.style.display = 'unset';
@@ -8,11 +19,18 @@ setTimeout(() => {
 
 const loader = new THREE.GLTFLoader()
 
+/**
+ * Creation de la scene et de la camera => Voir character.js pour details d'init THREE.JS
+ */
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = -5
 camera.rotation.y = Math.PI
 
+
+/**
+ * Creation du renderer avec son arrière plan => Voir character.js pour details d'init THREE.JS
+ */
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x383838)
@@ -24,6 +42,11 @@ window.addEventListener('resize', e => {
     renderer.setSize(window.innerWidth, window.innerHeight)
 })
 
+/* Ajout des lumières */
+const light = new THREE.AmbientLight(0xffffff, 1.8)
+scene.add(light)
+
+/* Shader qui permet de créer un arrière plan gradient */
 var shader = new THREE.ShaderMaterial({
     side: THREE.DoubleSide,
     uniforms: {
@@ -57,29 +80,19 @@ var shader = new THREE.ShaderMaterial({
 scene.add(new THREE.Mesh(new THREE.BoxGeometry(1000,1000,1000), shader))
 
 const maxHeight = Math.tan((camera.fov / 2) * Math.PI / 180) * camera.position.z * -1;
-const sliderHeight = (1.125 * window.innerHeight) / (maxHeight*2) * 2;
 
-for(const el of document.querySelectorAll('.infos > .item')) {
-  el.setAttribute('style', `height: ${sliderHeight}px; width: ${sliderHeight * (16/9)}px`)
-}
-//const controls = new OrbitControls(camera, renderer.domElement)
-/* END INIT */
 
-/* CREATE IMAGE FROM HTML FOR INFO */
-
-/* CREATE IMAGE FROM HTML FOR INFO */
-
+/* Contante qui vont servir */
 const numberOfPlane = 6
 const distance = 2.5
 const scrollMax = numberOfPlane**2 * 100
 
-const light = new THREE.AmbientLight(0xffffff, 1.8)
-scene.add(light)
-
 const center = new THREE.Group()
 
 var rock = null;
-loader.setPath('../assets/rock/')
+/* Chargement de la roche au pied de Michael */
+// Resource en ligne car bloquage navigateur
+loader.setPath('https://kairrot.github.io/site-nsi/assets/rock/')
 loader.load('scene.gltf', gltf => {
     rock = gltf.scene;
     rock.scale.set(0.02,0.02,0.02)
@@ -92,7 +105,9 @@ loader.load('scene.gltf', gltf => {
 })
 
 var centerStatue = null;
-loader.setPath('../assets/scofield/')
+/* Chargement de Michael */
+// Resource en ligne car bloquage navigateur
+loader.setPath('https://kairrot.github.io/site-nsi/assets/scofield/')
 loader.load('test.gltf', gltf => {
     centerStatue = gltf.scene
     centerStatue.rotation.y = Math.PI
@@ -104,6 +119,7 @@ loader.load('test.gltf', gltf => {
 scene.add(center)
 
 
+/* Groupe qui va contenir les sliders autour de Michael */
 const infos = new THREE.Group()
 const infosArray = []
 
@@ -112,11 +128,14 @@ const relativeAngle = (Math.PI / 3)
 
 function addBanner(i) {
   return new Promise(async resolve => {
-    new THREE.TextureLoader().load(`../assets/images/banner${numberOfPlane + 1 - i}.png`, texture => {
+    /* Chargement de la texture associé au slider */
+    // Resource en ligne car bloquage navigateur
+    new THREE.TextureLoader().load(`https://kairrot.github.io/site-nsi/assets/images/banner${numberOfPlane + 1 - i}.png`, texture => {
       const materialFront = new THREE.MeshBasicMaterial({map: texture, transparent: true });
       
       const info = new THREE.Mesh(geometry, materialFront)
   
+      /* Calcul des coordonnées en utilisant les coordonnées polaires */
       const absoluteAngle = (relativeAngle * i) - (Math.PI / 2)
   
       info.position.x = Math.cos(absoluteAngle) * distance
@@ -133,6 +152,7 @@ function addBanner(i) {
   })
 }
 
+/* Chargement des banières asyncrome */
 async function loadBanner() {
   for (var i = 1; i <= numberOfPlane; i++) {
     await addBanner(i)
@@ -143,7 +163,7 @@ loadBanner()
 infos.position.y = -numberOfPlane * 2.5
 scene.add(infos)
 
-/* SCROLL EVENT */
+/* Evenement lié au scroll */
 var scroll = {amount: 0}
 var tween = null
 window.addEventListener('wheel', e => {
@@ -159,29 +179,17 @@ window.addEventListener('wheel', e => {
         scroll.amount
     }
 
-
+    /* Utilisation de TWEEN.JS pour rendre fluide le déplacement */
     tween = new TWEEN.Tween(scroll)
         .to({amount: ((Math.abs(e.deltaY) <= 10) ? e.deltaY * 15 : e.deltaY) + scroll.amount}, 250)
         .easing(TWEEN.Easing.Quadratic.Out)
         .start()
 })
-/* SCROLL EVENT */
 
-
-/* MOUSE MOUVE */
-const mouse = new THREE.Vector2(-1,-1)
-window.addEventListener('mousemove', e => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-})
-/* MOUSE MOUVE */
-
-const raycaster = new THREE.Raycaster()
 function loop(time) {
     requestAnimationFrame(loop)
 
     TWEEN.update(time)
-    //controls.update()
     renderer.render(scene, camera)
 
     /* SCROLL */
@@ -194,15 +202,5 @@ function loop(time) {
     infos.rotation.y = -scrollRotation * 2
     infos.position.y = (-numberOfPlane * 2.5) + scrollAbsolute * 2.5 * numberOfPlane
     /* SCROLL */
-
-    /*for(var info of infosArray) {
-        info.material.color = new THREE.Color(0xfff)
-    }
-
-    raycaster.setFromCamera(mouse, camera)
-    const intersects = raycaster.intersectObjects(infosArray)
-    if(intersects.length !== 0) {
-        intersects[0].object.material.color = new THREE.Color(0xffff00)
-    }*/
 }
 loop(0)

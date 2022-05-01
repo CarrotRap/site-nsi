@@ -7,6 +7,14 @@
   margin: 0;
 }
 
+.info {
+  position: absolute;
+  left: 25px;
+  top: 50px;
+  font-size: 10px;
+  margin: 0;
+}
+
 .scrollInfo {
   position: absolute;
   right: 25px;
@@ -17,12 +25,10 @@
   background-color: white;
   border-radius: 100em;
   border: 2px solid #121212;
-  -webkit-animation: scrollAppear .8s ease-in forwards;
-          animation: scrollAppear .8s ease-in forwards;
+  animation: scrollAppear 0.8s ease-in forwards;
 }
-
 .scrollInfo::before {
-  content: '';
+  content: "";
   position: absolute;
   left: calc(50% - 5px);
   top: 10px;
@@ -30,17 +36,7 @@
   height: 10px;
   background-color: #121212;
   border-radius: 50%;
-  -webkit-animation: scroll ease-in-out 1.5s infinite;
-          animation: scroll ease-in-out 1.5s infinite;
-}
-
-@-webkit-keyframes scrollAppear {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  animation: scroll ease-in-out 1.5s infinite;
 }
 
 @keyframes scrollAppear {
@@ -51,53 +47,29 @@
     opacity: 1;
   }
 }
-
-@-webkit-keyframes scroll {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    -webkit-transform: translateY(40px);
-            transform: translateY(40px);
-  }
-}
-
 @keyframes scroll {
   0% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateY(40px);
-            transform: translateY(40px);
+    transform: translateY(40px);
   }
 }
-
 .infos {
   position: absolute;
   left: -10000px;
 }
-
 .infos .item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
-
 .infos .item p {
   color: black;
   padding: 0;
   margin: 0;
 }
-
 .infos .item .desc {
   overflow-wrap: anywhere;
   text-align: center;

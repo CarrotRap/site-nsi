@@ -1,5 +1,6 @@
 const rain = document.querySelector('.rain')
 
+/* Creation d'une goute avec un left aléatoire et un temps d'animation aléatoire => Voir CSS pour l'animation */
 function addFall() {
     const fall = document.createElement('div')
     fall.classList.add('fall');

@@ -1,51 +1,33 @@
 .question {
   padding: 10px;
 }
-
 .question .item {
   padding: 10px 0;
 }
-
 .question .item .answer {
   margin: 5px 0;
   font-weight: 800;
 }
-
 .question .item .responses .response {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
 }
-
 .question .item .responses .response label {
   margin: 5px 10px;
   color: white;
 }
-
 .question .item .responses .response input {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
   width: 40px;
   height: 20px;
   position: relative;
-  -webkit-transition: -webkit-transform .8s ease-in-out;
-  transition: -webkit-transform .8s ease-in-out;
-  transition: transform .8s ease-in-out;
-  transition: transform .8s ease-in-out, -webkit-transform .8s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   --color: white;
 }
-
 .question .item .responses .response input::before {
   position: absolute;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   content: "";
   left: 0;
   top: 0;
@@ -53,10 +35,8 @@
   height: 100%;
   border: 3px solid var(--color);
   border-radius: 99em;
-  -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0.4s;
 }
-
 .question .item .responses .response input::after {
   position: absolute;
   content: "";
@@ -65,50 +45,29 @@
   width: 10px;
   height: 10px;
   background: var(--color);
-  -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50%;
 }
-
 .question .item .responses .response input:checked {
-  -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
+  transform: rotate(360deg);
 }
-
 .question .item .responses .response input:checked::before {
   background-color: var(--color);
 }
-
 .question .item .responses .response input:checked::after {
   background-color: black;
-  -webkit-animation: switch .4s ease-in-out forwards;
-          animation: switch .4s ease-in-out forwards;
-  -webkit-animation-delay: .7s;
-          animation-delay: .7s;
-}
-
-@-webkit-keyframes switch {
-  0% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(20px);
-            transform: translateX(20px);
-  }
+  animation: switch 0.4s ease-in-out forwards;
+  animation-delay: 0.7s;
 }
 
 @keyframes switch {
   0% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
+    transform: translateX(0);
   }
   100% {
-    -webkit-transform: translateX(20px);
-            transform: translateX(20px);
+    transform: translateX(20px);
   }
 }
-
 .end {
   margin: 5px 25px;
   font-weight: 800;
@@ -122,7 +81,6 @@
   position: relative;
   background-color: white;
 }
-
 .valid::after, .restart::after {
   position: absolute;
   content: "";
@@ -131,32 +89,21 @@
   width: 100%;
   height: 100%;
   background: blue;
-  -webkit-transform: scaleX(0);
-          transform: scaleX(0);
-  -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
-  -webkit-transition: -webkit-transform .4s ease-in-out;
-  transition: -webkit-transform .4s ease-in-out;
-  transition: transform .4s ease-in-out;
-  transition: transform .4s ease-in-out, -webkit-transform .4s ease-in-out;
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition: transform 0.4s ease-in-out;
 }
-
 .valid::before, .restart::before {
   position: absolute;
   left: 50%;
   top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 10;
-  -webkit-transition: color .4s;
-  transition: color .4s;
+  transition: color 0.4s;
 }
-
 .valid:hover::after, .restart:hover::after {
-  -webkit-transform: scaleX(1);
-          transform: scaleX(1);
+  transform: scaleX(1);
 }
-
 .valid:hover::before, .restart:hover::before {
   color: white;
 }

@@ -1,6 +1,11 @@
-/*import * as THREE from 'three'
-import { TextGeometry } from 'https://unpkg.com/three@0.139.2/examples/jsm/geometries/TextGeometry.js'
-import { FontLoader } from 'https://unpkg.com/three@0.139.2/examples/jsm/loaders/FontLoader.js';*/
+/**
+ * Pour cette page, j'utilise 2 librairies nécesaire :
+ *  - THREE.JS => Lib qui permet de gerer la 3d dans un navigateur en utilisant le moteur de rendu WebGL.
+ *  - CANNON.JS => Lib qui permet de simuler de la physique en 3d (gravité, force, etc..)
+ * 
+ * Certaines resources sont mises ailleurs car le navigateur bloque la lecteur si on n'utilise pas de serveur web
+ * Les resources sont à l'adresse : https://kairrot.github.io/site-nsi/ où l'on peut retrouver le site en ligne
+ */
 
 class Scene {
 
@@ -15,6 +20,14 @@ class Scene {
         this.setup();
     }
 
+    /**
+     * Dans cette fonction, il y a:
+     *  - La creation d'un monde CANNON et la mise en place de la gravité dans ce monde
+     *  - La creation de la scene 3d THREE.JS et de son brouillard
+     *  - La creation d'un timer pour gerer l'animation
+     *  - Toutes les fonctions d'initialisation (camera, objets, rendu 3d, lumière)
+     *  - Le mise a niveau de la taille si le navigateur est resize
+     */
     setup() {
         this.world = new CANNON.World();
         this.world.gravity.set(0, -50, 0);
@@ -48,6 +61,10 @@ class Scene {
         })
     }
 
+    /**
+     * Creation de la camera en utilisant l'aspet de la fenetre
+     * Position de la camera mise ainsi que son angle de vue
+     */
     setCamera() {
         const aspect = window.innerWidth / window.innerHeight;
 
@@ -57,6 +74,11 @@ class Scene {
         this.camera.lookAt(new THREE.Vector3())
     }
 
+    /**
+     * Creation du moteur de rendu en utilisant un canvas
+     * Arrière plan en #312929
+     * Creation de la boucle d'animation à 60FPS => "this.draw()"
+     */
     setRender() {
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
@@ -74,6 +96,7 @@ class Scene {
         })
     }
 
+    /* Mise en place des lumières */
     setLights() {
         const ambientLight = new THREE.AmbientLight(0xcccccc);
         this.scene.add(ambientLight);
@@ -87,10 +110,15 @@ class Scene {
         this.scene.add(backLight);
       }
 
+      /* Ajout des objets dans le menu */
     addObjects() {
         this.menu = new Menu(this.scene, this.world, this.camera, this.renderer.domElement)
     }
 
+    /**
+     * Boucle à 60FPS
+     * Rendu à l'objet this.renderer de la scene avec la caméra
+     */
     draw() {
         this.menu.update()
         this.world.step(1 / 60)
@@ -107,6 +135,10 @@ class Menu {
     totalMass = 1;
     force = 25;
 
+    /**
+     * Chargement de la police en ligne
+     * Ajout des evenement de click et de déplacement de souris
+     */
     constructor(scene, world, camera, canvas) {
         this.navItems = document.querySelectorAll('.navigation a');
 
@@ -119,7 +151,8 @@ class Menu {
         
         this.words = [];
 
-        new THREE.FontLoader().load('../assets/font/droid.json', font => {
+        // Resource en ligne car bloquage navigateur
+        new THREE.FontLoader().load('https://kairrot.github.io/site-nsi/assets/font/droid.json', font => {
             this.setup(font)
         })
 
@@ -130,6 +163,11 @@ class Menu {
         window.addEventListener('mousemove', (e) => { this.onMouseMouve(e) })
     }
 
+    /**
+     * Le but de cette fonction est de détecter les clics sur un élément en utilisant un raycaster
+     * puis de lui appliquer une force pour l'expluser
+     * puis retirer tout les sols pour que les objets soit tiré vers le bas (gravité)
+     */
     onClick() {
         this.raycaster.setFromCamera(this.mouse, this.camera)
 
@@ -170,12 +208,14 @@ class Menu {
             })
         }
     }
+    /* Changement du vecteur de la position de la souris */
     onMouseMouve(e) {
         this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     }
 
     setup(f) {
+        // Options d'extrudation des textes
         const textOptions = {
             font: f,
             size: 3,
@@ -188,6 +228,7 @@ class Menu {
             bevelSegments: 10
           };
 
+          /* Creation des materiels de frotements dans CANNON.JS */
         const groundMaterial = new CANNON.Material();
         const letterMaterial = new CANNON.Material();
 
@@ -197,14 +238,17 @@ class Menu {
 
         this.world.addContactMaterial(contactMaterial)
 
+        /* Iterer dans les lignes à afficher */
         Array.from(this.navItems)
             .reverse()
             .forEach((item, i) => {
                 const { innerText } = item;
 
+                /* Creation d'un groupe THREE.JS qui va contenir les lettres */
                 const words = new THREE.Group()
                 words.letterOff = 0
 
+                /* Creation du sol en dessus du mot */
                 words.ground = new CANNON.Body({
                     mass: 0,
                     shape: new CANNON.Box(new CANNON.Vec3(50, 50, 0.1)),
@@ -215,24 +259,33 @@ class Menu {
 
                 words.isGround = false;
 
+                // Couleur aléatoire
                 const randomColor = pick(colors)
 
+                /* Iterer dans les lettres */
                 Array.from(innerText).forEach((letter, j) => {
+                    /* Creation du materiel en utilisant la couleur aléatoire */
                     const material = new THREE.MeshPhongMaterial({ color: randomColor.from.clone().lerp(randomColor.to, (j) / (innerText.length - 1)), shininess: 200 })
+                    /* Creation de la geometry 3d avec les options décrite au dessus */
                     const geometry = new THREE.TextGeometry(letter, textOptions);
 
                     geometry.computeBoundingBox()
                     geometry.computeBoundingSphere()
 
+                    /* Creation du mesh THREE.JS qui contient la geometry et le materiel */
                     const mesh = new THREE.Mesh(geometry, material);
+
+                    /* On recupere la taille du mesh */
                     mesh.size = mesh.geometry.boundingBox.getSize(new THREE.Vector3())
                     mesh.size.multiply(new THREE.Vector3(0.5, 0.5, 0.5))
 
+                    /* On calcule sa position */
                     mesh.initPosition = new CANNON.Vec3(words.letterOff * 2, (this.navItems.length - 1 - i) * this.margin - this.offset, 0)
                     mesh.initPositionOffset = new CANNON.Vec3(mesh.initPosition.x, mesh.initPosition.y + i * 25 + 30 + j * 0.03, mesh.initPosition.z)
 
                     words.letterOff += mesh.size.x
 
+                    /* Creation du corps dans CANNON.JS en utilisant le mesh THREE.JS */
                     const box = new CANNON.Box(new CANNON.Vec3().copy(mesh.size))
 
                     mesh.body = new CANNON.Body({
@@ -249,8 +302,6 @@ class Menu {
                     words.add(mesh);
                 })
 
-                //this.world.addBody(words.ground);
-
                 words.children.forEach(letter => {
                     letter.body.position.x -= words.letterOff
                 })
@@ -262,6 +313,9 @@ class Menu {
         this.setConstraints()
     }
 
+    /**
+     * Creation des contraintes entre chaque lettre pour quelle soit attacher
+     */
     setConstraints() {
         this.words.forEach(word => {
             for(let i = 0; i < word.children.length; i++) {
@@ -286,6 +340,10 @@ class Menu {
         })
     }
 
+    /**
+     * Boucle à 60FPS
+     * La position calculer par CANNON.JS est mise dans le moteur THREE.JS
+     */
     update() {
         if (!this.words) return;
     
@@ -312,7 +370,7 @@ class Menu {
     }
 }
 
-/* CONSTANTS */
+/* Couleur aléatoire */
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 const colors = [
     {
@@ -349,20 +407,5 @@ const colors = [
     },
 ]
 
-/*const colors = [
-    {
-        from : new THREE.Color('#DF872D'),
-        to   : new THREE.Color('#B35E07'),
-    },
-    {
-        from : new THREE.Color('#e2ad76'),
-        to   : new THREE.Color('#bb7d6e'),
-    },
-    {
-        from : new THREE.Color('#5d3d42'),
-        to   : new THREE.Color('#5d2d29'),
-    },
-]*/
-
-/* END CONSTANTS */
+// Initialisation de la scène
 const scene = new Scene()
